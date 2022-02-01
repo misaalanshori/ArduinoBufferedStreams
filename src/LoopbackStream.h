@@ -23,6 +23,7 @@ public:
   void clear(); 
   
   virtual size_t write(uint8_t);
+  virtual size_t write(uint8_t*, size_t);
   virtual int availableForWrite(void);
   
   virtual int available();

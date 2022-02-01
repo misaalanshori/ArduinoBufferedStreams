@@ -43,6 +43,33 @@ size_t LoopbackStream::write(uint8_t v) {
   }  
 }
 
+size_t LoopbackStream::write(uint8_t* v, size_t bufSize) {
+  int p = pos + size; 
+  int w;
+  int toWrite = bufSize;
+  int written = 0;
+
+  while (toWrite != 0) {
+    if (size + toWrite > buffer_size) {
+      return written;
+    }
+    if (p >= buffer_size) {
+      p -= buffer_size;
+    }
+    w = toWrite;
+    if (w > buffer_size - p) {
+      w = buffer_size - p;
+    }
+    memcpy(&buffer[p], &v[written], w);
+    size += w;
+    p += w;
+    written += w;
+    toWrite -= w;
+  }
+
+  return written;
+}
+
 int LoopbackStream::available() {
   return size;
 }
